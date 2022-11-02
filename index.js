@@ -24,6 +24,7 @@ connectMongoDB();
 app.get('/', (req, res) => res.send(`Vidly App Server is running`));
 
 app.use('/api/genres', require('./routes/genreRoutes'));
+app.use('/api/movies', require('./routes/movieRoutes'));
 
 app.use(errorHandler);
 

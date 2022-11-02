@@ -1,16 +1,32 @@
 const { Genre } = require('../models/Genre');
 
-// 1. GET All Genres
+/**
+ * Get List of Genres
+ * @route /api/genres
+ * @method GET
+ * @param {any} req the request object
+ * @param {any} res the response object
+ * @returns list of genres
+ */
 const getGenres = async (req, res) => {
   try {
     const genres = await Genre.find();
     return res.status(200).json(genres);
   } catch (error) {
-    return res.status(500).json('Error occurred retrieving genres.');
+    return res
+      .status(500)
+      .json({ message: 'Error occurred updating Genres:' + error });
   }
 };
 
-// 2. GET Single Genres
+/**
+ * Get Single Genre
+ * @route /api/genres/:id
+ * @method GET
+ * @param {any} req the request object
+ * @param {any} res the response object
+ * @returns single genre
+ */
 const getSingle = async (req, res) => {
   const id = req.params.id;
   if (!id) {
@@ -26,11 +42,20 @@ const getSingle = async (req, res) => {
     }
     return res.status(200).json(genre);
   } catch (error) {
-    return res.status(500).json('Error occurred retrieving single genre.');
+    return res
+      .status(500)
+      .json({ message: 'Error occurred updating Genres:' + error });
   }
 };
 
-// 1. Create Genre
+/**
+ * Create Single Genre
+ * @route /api/genres
+ * @method POST
+ * @param {any} req the request object
+ * @param {any} res the response object
+ * @returns single genre
+ */
 const createGenre = async (req, res) => {
   const genre = req.body;
   // TODO: Validate data using Joi
@@ -39,10 +64,20 @@ const createGenre = async (req, res) => {
     const newGenre = await Genre.create(genre);
     return res.status(201).json(newGenre);
   } catch (error) {
-    return res.status(500).json('Error occurred creating genre.');
+    return res
+      .status(500)
+      .json({ message: 'Error occurred updating Genres:' + error });
   }
 };
-// 1. GET All Genres
+
+/**
+ * Update Single Genre
+ * @route /api/genres/:id
+ * @method PUT
+ * @param {any} req the request object
+ * @param {any} res the response object
+ * @returns updated single genre
+ */
 const updateGenre = async (req, res) => {
   const id = req.params.id;
   if (!id) {
@@ -63,10 +98,20 @@ const updateGenre = async (req, res) => {
     }
     return res.status(200).json(updatedGenre);
   } catch (error) {
-    return res.status(500).json('Error occurred updating genres.');
+    return res
+      .status(500)
+      .json({ message: 'Error occurred updating Genres:' + error });
   }
 };
-// 1. GET All Genres
+
+/**
+ * Delete Single Genre
+ * @route /api/genres/:id
+ * @method DELETE
+ * @param {any} req the request object
+ * @param {any} res the response object
+ * @returns deleted genre
+ */
 const deleteGenre = async (req, res) => {
   const id = req.params.id;
   if (!id) {
@@ -82,7 +127,9 @@ const deleteGenre = async (req, res) => {
     }
     return res.status(200).json(removedGenre);
   } catch (error) {
-    return res.status(500).json('Error occurred deleting genres.');
+    return res
+      .status(500)
+      .json({ message: 'Error occurred updating Genres:' + error });
   }
 };
 
