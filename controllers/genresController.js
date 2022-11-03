@@ -76,13 +76,14 @@ const createGenre = async (req, res, next) => {
  * @returns updated single genre
  */
 const updateGenre = async (req, res) => {
-  const id = req.params.id;
-  if (!id) {
-    res.status(400);
-    throw new Error('Invalid Id Provided.');
-  }
-
   try {
+    const id = req.params.id;
+    console.log(`${id}`);
+    if (typeof id === 'null' || typeof id === 'undefined') {
+      res.status(400);
+      throw new Error('Invalid Id Provided.');
+    }
+
     const value = await genreSchemaValidator.validateAsync(req.body);
 
     const updatedGenre = await Genre.findByIdAndUpdate(id, value, {
