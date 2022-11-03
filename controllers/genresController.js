@@ -1,4 +1,5 @@
-const { Genre } = require('../models/Genre');
+const { Schema } = require('mongoose');
+const { Genre, genreSchemaValidator } = require('../models/Genre');
 
 /**
  * Get List of Genres
@@ -56,17 +57,13 @@ const getSingle = async (req, res) => {
  * @param {any} res the response object
  * @returns single genre
  */
-const createGenre = async (req, res) => {
-  const genre = req.body;
-  // TODO: Validate data using Joi
-
+const createGenre = async (req, res, next) => {
   try {
-    const newGenre = await Genre.create(genre);
+    const value = await genreSchemaValidator.validateAsync(req.body);
+    const newGenre = await Genre.create(value);
     return res.status(201).json(newGenre);
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: 'Error occurred updating Genres:' + error });
+    return res.status(500).json({ message: 'Error Creating Genre: ' + error });
   }
 };
 
@@ -82,16 +79,16 @@ const updateGenre = async (req, res) => {
   const id = req.params.id;
   if (!id) {
     res.status(400);
-    throw new Error('Invalid id provided.');
+    throw new Error('Invalid Id Provided.');
   }
 
-  const genre = req.body;
-  // TODO: Validate data
-
   try {
-    const updatedGenre = await Genre.findByIdAndUpdate(id, genre, {
+    const value = await genreSchemaValidator.validateAsync(req.body);
+
+    const updatedGenre = await Genre.findByIdAndUpdate(id, value, {
       new: true,
     });
+
     if (!updatedGenre) {
       res.status(404);
       throw new Error('Genre not found');
@@ -132,6 +129,10 @@ const deleteGenre = async (req, res) => {
       .json({ message: 'Error occurred updating Genres:' + error });
   }
 };
+
+// const validateSchema = async (genre) => {
+//   return await genreSchemaValidator.validateAsync(genre);
+// };
 
 module.exports = {
   getGenres,

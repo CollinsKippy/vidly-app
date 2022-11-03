@@ -1,4 +1,4 @@
-const { Movie } = require('../models/Movie');
+const { Movie, movieSchemaValidator } = require('../models/Movie');
 
 /**
  * Get List of Movies
@@ -57,11 +57,9 @@ const getSingle = async (req, res) => {
  * @returns single movie
  */
 const createMovie = async (req, res) => {
-  const movie = req.body;
-  // TODO: Validate data using Joi
-
   try {
-    const newMovie = await Movie.create(movie);
+    const value = await movieSchemaValidator.validateAsync(req.body);
+    const newMovie = await Movie.create(value);
     return res.status(201).json(newMovie);
   } catch (error) {
     return res
@@ -85,11 +83,10 @@ const updateMovie = async (req, res) => {
     throw new Error('Invalid id provided.');
   }
 
-  const movie = req.body;
-  // TODO: Validate data
-
   try {
-    const updatedMovie = await Movie.findByIdAndUpdate(id, movie, {
+    const value = await movieSchemaValidator.validateAsync(req.body);
+
+    const updatedMovie = await Movie.findByIdAndUpdate(id, value, {
       new: true,
     });
     if (!updatedMovie) {

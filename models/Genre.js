@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
+const Joi = require('joi');
 
-const genreModel = new mongoose.Schema({
+/**
+ * Genre Schema and Model
+ */
+const genreSchema = new mongoose.Schema({
   name: {
     type: String,
     minlength: 3,
@@ -8,8 +12,16 @@ const genreModel = new mongoose.Schema({
   },
 });
 
-const Genre = mongoose.model('Genre', genreModel);
+const Genre = mongoose.model('Genre', genreSchema);
+
+/**
+ * Genre Schema Validator
+ */
+const genreSchemaValidator = Joi.object({
+  name: Joi.string().min(3).required(),
+});
 
 module.exports = {
   Genre,
+  genreSchemaValidator,
 };
