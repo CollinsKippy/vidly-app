@@ -4,13 +4,19 @@ const Joi = require('joi');
 /**
  * Genre Schema and Model
  */
-const genreSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    minlength: 3,
-    required: [true, 'Name of Genre is required.'],
+const genreSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      minlength: 3,
+      maxlength: 20,
+      required: [true, 'Name of Genre is required.'],
+    },
   },
-});
+  {
+    timestamps: true,
+  }
+);
 
 const Genre = mongoose.model('Genre', genreSchema);
 
@@ -18,7 +24,7 @@ const Genre = mongoose.model('Genre', genreSchema);
  * Genre Schema Validator
  */
 const genreSchemaValidator = Joi.object({
-  name: Joi.string().min(3).required(),
+  name: Joi.string().min(3).max(20).required(),
 });
 
 module.exports = {
