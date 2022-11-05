@@ -1,5 +1,5 @@
 const { Schema } = require('mongoose');
-const { Genre, genreSchemaValidator } = require('../models/Genre');
+const { Genre, genreJoiValidator: genreSchemaValidator } = require('../models/Genre');
 
 /**
  * Get List of Genres

@@ -39,7 +39,7 @@ const Customer = mongoose.model('Customer', customerSchema);
 /**
  * Customer Validator
  */
-const customerSchemaValidator = Joi.object({
+const customerJoiValidator = Joi.object({
   firstName: Joi.string().min(3).max(20).required(),
   lastName: Joi.string().min(3).max(20).required(),
   isGold: Joi.boolean(),
@@ -48,5 +48,5 @@ const customerSchemaValidator = Joi.object({
 
 module.exports = {
   Customer,
-  customerSchemaValidator,
+  customerJoiValidator,
 };

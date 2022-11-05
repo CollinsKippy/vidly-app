@@ -36,7 +36,7 @@ const movieSchema = new mongoose.Schema(
 
 const Movie = mongoose.model('Movie', movieSchema);
 
-const movieSchemaValidator = Joi.object({
+const movieJoiValidator = Joi.object({
   title: Joi.string().min(3).max(56).required(),
   numberAvailable: Joi.number().integer().min(0).required(),
   dailyRentalRate: Joi.number().min(0).required(),
@@ -45,5 +45,5 @@ const movieSchemaValidator = Joi.object({
 
 module.exports = {
   Movie,
-  movieSchemaValidator,
+  movieSchemaValidator: movieJoiValidator,
 };

@@ -23,11 +23,11 @@ const Genre = mongoose.model('Genre', genreSchema);
 /**
  * Genre Schema Validator
  */
-const genreSchemaValidator = Joi.object({
+const genreJoiValidator = Joi.object({
   name: Joi.string().min(3).max(20).required(),
 });
 
 module.exports = {
   Genre,
-  genreSchemaValidator,
+  genreJoiValidator,
 };

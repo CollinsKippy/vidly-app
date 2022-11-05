@@ -33,6 +33,7 @@ const rentalSchema = new mongoose.Schema(
       },
     }),
     dateIssued: {
+      // set at ctrl level
       type: Date,
       required: true,
     },
@@ -50,3 +51,15 @@ const rentalSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+const Rental = mongoose.model('Rental', rentalSchema);
+
+const rentalJoiValidator = Joi.object({
+  customerId: Joi.required(),
+  movieId: Joi.required(),
+});
+
+module.exports = {
+  Rental,
+  rentalJoiValidator,
+};
