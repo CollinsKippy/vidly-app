@@ -30,5 +30,4 @@ app.use('/api/customers', require('./routes/customerRoute'));
 
 app.use(errorHandler);
 
-console.log(`${process.env.NODE_ENV}`);
 app.listen(port, () => console.log('listening on port', port));
