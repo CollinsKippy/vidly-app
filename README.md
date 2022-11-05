@@ -1,6 +1,6 @@
 # vidly-app
-## Part of a NodeJS Course by Mosh Hamedani
-# Concepts Covered
+Part of a NodeJS Course by Mosh Hamedani
+## Concepts Covered
 ExpressJS
 REST APIs and CRUD Operations
 Mongo DB and Modeling Relationships Between Collections
