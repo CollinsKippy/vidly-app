@@ -1,10 +1,10 @@
 # Vidly App - Movie Rental App
 Part of a NodeJS Course by Mosh Hamedani
 ## Concepts Covered
-ExpressJS
-REST APIs and CRUD Operations
-Mongo DB and Modeling Relationships Between Collections
-Data Validation with Joi
-Authentication
-Environment Setup
-Asynchronous Javascript (Async-Await)
+ExpressJS <br/>
+REST APIs and CRUD Operations <br/>
+Mongo DB and Modeling Relationships Between Collections <br/>
+Data Validation with Joi <br/>
+Authentication <br/>
+Environment Setup <br/>
+Asynchronous Javascript (Async-Await) <br/>
