@@ -1,4 +1,4 @@
-# vidly-app
+# Vidly App - Movie Rental App
 Part of a NodeJS Course by Mosh Hamedani
 ## Concepts Covered
 ExpressJS
