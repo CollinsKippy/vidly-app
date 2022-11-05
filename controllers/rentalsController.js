@@ -1,0 +1,130 @@
+const { Rental, rentalJoiValidator } = require('../models/Rental');
+
+/**
+ * Returns list of rentals
+ * @method GET
+ * @route /api/rentals
+ * @param {any} req request object
+ * @param {any} res response object
+ * @returns List of Rentals
+ */
+const getRentals = async (req, res) => {
+  try {
+    const rentals = await Rental.find();
+    return res.status(200).json(rentals);
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Error retrieving rentals: ' + error?.message,
+    });
+  }
+};
+
+/**
+ * Returns single rental
+ * @method GET
+ * @route /api/rentals/:id
+ * @param {any} req request object
+ * @param {any} res response object
+ * @returns Single Rental
+ */
+const getSingleRental = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const rental = await Rental.find(id);
+
+    if (!rental) {
+      res.status(404);
+      throw new Error(`Rental with id ${id} not found.`);
+    }
+
+    return res.status(200).json(rental);
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Error retrieving rental: ' + error?.message,
+    });
+  }
+};
+
+/**
+ * Creates new rental
+ * @method POST
+ * @route /api/rentals
+ * @param {any} req request object
+ * @param {any} res response object
+ * @returns New of Rental
+ */
+const createRental = async (req, res) => {
+  try {
+    const value = await rentalJoiValidator.validateAsync(req.body);
+    const rental = await Rental.create(value);
+
+    return res.status(200).json(rental);
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Error creating rental: ' + error?.message,
+    });
+  }
+};
+
+/**
+ * Update rental
+ * @method PUT
+ * @route /api/rentals/:id
+ * @param {any} req request object
+ * @param {any} res response object
+ * @returns List of Rentals
+ */
+const updateRental = async (req, res) => {
+  try {
+    const value = await rentalJoiValidator.validateAsync(req.body);
+    const rental = await Rental.findByIdAndUpdate(id, value, {
+      new: true,
+    });
+
+    if (!rental) {
+      res.status(400);
+      throw new Error('Invalid rental updated.');
+    }
+
+    return res.status(200).json(rental);
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Error updating rental: ' + error?.message,
+    });
+  }
+};
+
+/**
+ * Deletes a rental
+ * @method DELETE
+ * @route /api/rental/:id
+ * @param {any} req request object
+ * @param {any} res response object
+ * @returns Deleted Rental
+ */
+const deleteRental = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const rental = await Rental.findByIdAndRemove(id);
+    if (!rental) {
+      res.status(400);
+      throw new Error('Invalid rental delete attempt.');
+    }
+
+    return res.status(200).json(rental);
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Error deleting rental: ' + error?.message,
+    });
+  }
+};
+
+module.exports = {
+  getRentals,
+  getSingleRental,
+  createRental,
+  updateRental,
+  deleteRental,
+};

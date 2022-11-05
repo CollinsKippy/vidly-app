@@ -45,5 +45,5 @@ const movieJoiValidator = Joi.object({
 
 module.exports = {
   Movie,
-  movieSchemaValidator: movieJoiValidator,
+  movieJoiValidator,
 };

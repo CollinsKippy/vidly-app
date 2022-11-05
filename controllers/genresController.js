@@ -1,5 +1,5 @@
 const { Schema } = require('mongoose');
-const { Genre, genreJoiValidator: genreSchemaValidator } = require('../models/Genre');
+const { Genre, genreJoiValidator } = require('../models/Genre');
 
 /**
  * Get List of Genres
@@ -59,7 +59,7 @@ const getSingle = async (req, res) => {
  */
 const createGenre = async (req, res, next) => {
   try {
-    const value = await genreSchemaValidator.validateAsync(req.body);
+    const value = await genreJoiValidator.validateAsync(req.body);
     const newGenre = await Genre.create(value);
     return res.status(201).json(newGenre);
   } catch (error) {
@@ -84,7 +84,7 @@ const updateGenre = async (req, res) => {
       throw new Error('Invalid Id Provided.');
     }
 
-    const value = await genreSchemaValidator.validateAsync(req.body);
+    const value = await genreJoiValidator.validateAsync(req.body);
 
     const updatedGenre = await Genre.findByIdAndUpdate(id, value, {
       new: true,
@@ -132,7 +132,7 @@ const deleteGenre = async (req, res) => {
 };
 
 // const validateSchema = async (genre) => {
-//   return await genreSchemaValidator.validateAsync(genre);
+//   return await genreJoiValidator.validateAsync(genre);
 // };
 
 module.exports = {

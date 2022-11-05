@@ -1,4 +1,4 @@
-const { Movie, movieSchemaValidator } = require('../models/Movie');
+const { Movie, movieJoiValidator } = require('../models/Movie');
 
 /**
  * Get List of Movies
@@ -58,7 +58,7 @@ const getSingle = async (req, res) => {
  */
 const createMovie = async (req, res) => {
   try {
-    const value = await movieSchemaValidator.validateAsync(req.body);
+    const value = await movieJoiValidator.validateAsync(req.body);
     const newMovie = await Movie.create(value);
     return res.status(201).json(newMovie);
   } catch (error) {
@@ -84,7 +84,7 @@ const updateMovie = async (req, res) => {
   }
 
   try {
-    const value = await movieSchemaValidator.validateAsync(req.body);
+    const value = await movieJoiValidator.validateAsync(req.body);
 
     const updatedMovie = await Movie.findByIdAndUpdate(id, value, {
       new: true,
