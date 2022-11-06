@@ -43,6 +43,11 @@ const rentalSchema = new mongoose.Schema({
     min: 0,
     max: 1000,
   },
+  numberOfDays: {
+    type: Number,
+    required: true,
+    min: 0,
+  },
 });
 
 const Rental = mongoose.model('Rental', rentalSchema);
@@ -50,6 +55,7 @@ const Rental = mongoose.model('Rental', rentalSchema);
 const rentalJoiValidator = Joi.object({
   customerId: Joi.required(),
   movieId: Joi.required(),
+  numberOfDays: Joi.required().integer(),
 });
 
 module.exports = {

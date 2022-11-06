@@ -1,3 +1,5 @@
+const { Customer } = require('../models/Customer');
+const { Movie } = require('../models/Movie');
 const { Rental, rentalJoiValidator } = require('../models/Rental');
 
 /**
@@ -57,7 +59,36 @@ const getSingleRental = async (req, res) => {
 const createRental = async (req, res) => {
   try {
     const value = await rentalJoiValidator.validateAsync(req.body);
-    const rental = await Rental.create(value);
+
+    const customerId = req.body.customerId;
+    const movieId = req.body.movieId;
+    const numberOfDays = req.body.numberOfDays;
+
+    const customer = await Customer.findById(req.body.customerId);
+    if (!customer) {
+      res.status(404);
+      throw new Error(`Customer with id: ${customerId} not found.`);
+    }
+
+    const movie = await Movie.findById(req.body.movieId);
+    if (!movie) {
+      res.status(404);
+      throw new Error(`Movie with id: ${movieId} not found.`);
+    }
+
+    const rental = await Rental.create({
+      customer: {
+        name: customer.firstName + ' ' + customer.lastName,
+        phoneNumber: customer.phoneNumber,
+      },
+      movie: {
+        title: movie.title,
+        dailyRentalRate: movie.dailyRentalRate,
+      },
+      dateIssued: Date.now(),
+      numberOfDays: numberOfDays,
+      rentalFee: movie.dailyRentalRate * numberOfDays,
+    });
 
     return res.status(200).json(rental);
   } catch (error) {

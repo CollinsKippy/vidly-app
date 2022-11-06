@@ -29,6 +29,5 @@ app.use('/api/rentals', require('./routes/rentalRoute'));
 app.use('/api/customers', require('./routes/customerRoute'));
 
 app.use(errorHandler);
-console.log('😊');
 
-app.listen(port, () => console.log('listening on port', port));
+app.listen(port, () => console.log(`listening on port: ${port}. 😊`));

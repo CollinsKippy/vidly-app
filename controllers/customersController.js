@@ -31,7 +31,7 @@ const getSingleCustomer = async (req, res) => {
   try {
     const id = req.params.id;
 
-    const customer = await Customer.find(id);
+    const customer = await Customer.findById(id);
 
     if (!customer) {
       res.status(404);
@@ -77,6 +77,7 @@ const createCustomer = async (req, res) => {
  */
 const updateCustomer = async (req, res) => {
   try {
+    const id = req.params.id;
     const value = await customerJoiValidator.validateAsync(req.body);
     const customer = await Customer.findByIdAndUpdate(id, value, {
       new: true,
