@@ -36,7 +36,7 @@ const getSingle = async (req, res) => {
   }
 
   try {
-    const genre = await Genre.find(id);
+    const genre = await Genre.findById(id);
     if (!genre) {
       res.status(404);
       throw new Error('Genre not found.');
@@ -121,7 +121,7 @@ const deleteGenre = async (req, res) => {
     const removedGenre = await Genre.findByIdAndRemove(id);
     if (!removedGenre) {
       res.status(404);
-      throw new Error('Genre not found');
+      throw new Error(`Genre with id ${id} not found.`);
     }
     return res.status(200).json(removedGenre);
   } catch (error) {

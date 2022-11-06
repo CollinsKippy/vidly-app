@@ -33,7 +33,7 @@ const getSingleRental = async (req, res) => {
   try {
     const id = req.params.id;
 
-    const rental = await Rental.find(id);
+    const rental = await Rental.findById(id);
 
     if (!rental) {
       res.status(404);
@@ -109,13 +109,45 @@ const createRental = async (req, res) => {
 const updateRental = async (req, res) => {
   try {
     const value = await rentalJoiValidator.validateAsync(req.body);
-    const rental = await Rental.findByIdAndUpdate(id, value, {
-      new: true,
-    });
+
+    const id = req.params.id;
+    const customerId = req.body.customerId;
+    const movieId = req.body.movieId;
+    const numberOfDays = req.body.numberOfDays;
+
+    const customer = await Customer.findById(req.body.customerId);
+    if (!customer) {
+      res.status(404);
+      throw new Error(`Customer with id: ${customerId} not found.`);
+    }
+
+    const movie = await Movie.findById(req.body.movieId);
+    if (!movie) {
+      res.status(404);
+      throw new Error(`Movie with id: ${movieId} not found.`);
+    }
+
+    const rental = await Rental.findByIdAndUpdate(
+      id,
+      {
+        customer: {
+          name: customer.firstName + ' ' + customer.lastName,
+          phoneNumber: customer.phoneNumber,
+        },
+        movie: {
+          title: movie.title,
+          dailyRentalRate: movie.dailyRentalRate,
+        },
+        dateIssued: Date.now(),
+        numberOfDays: numberOfDays,
+        rentalFee: movie.dailyRentalRate * numberOfDays,
+      },
+      { new: true }
+    );
 
     if (!rental) {
-      res.status(400);
-      throw new Error('Invalid rental updated.');
+      res.status(404);
+      throw new Error(`Rental with id: ${rentalId} not found.`);
     }
 
     return res.status(200).json(rental);
@@ -141,7 +173,7 @@ const deleteRental = async (req, res) => {
     const rental = await Rental.findByIdAndRemove(id);
     if (!rental) {
       res.status(400);
-      throw new Error('Invalid rental delete attempt.');
+      throw new Error(`Rental with id ${id} not found.`);
     }
 
     return res.status(200).json(rental);

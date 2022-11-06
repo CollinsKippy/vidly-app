@@ -111,7 +111,7 @@ const deleteCustomer = async (req, res) => {
     const customer = await Customer.findByIdAndRemove(id);
     if (!customer) {
       res.status(400);
-      throw new Error('Invalid customer delete attempt.');
+      throw new Error(`Customer with id ${id} not found.`);
     }
 
     return res.status(200).json(customer);

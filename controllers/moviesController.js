@@ -35,7 +35,7 @@ const getSingle = async (req, res) => {
   }
 
   try {
-    const Movie = await Movie.find(id);
+    const Movie = await Movie.findById(id);
     if (!Movie) {
       res.status(404);
       throw new Error('Movie not found.');
@@ -120,7 +120,7 @@ const deleteMovie = async (req, res) => {
     const removedMovie = await Movie.findByIdAndRemove(id);
     if (!removedMovie) {
       res.status(404);
-      throw new Error('Movie not found');
+      throw new Error(`Movie with id ${id} not found.`);
     }
     return res.status(200).json(removedMovie);
   } catch (error) {
