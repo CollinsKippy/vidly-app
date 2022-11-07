@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const {
   User,
   userLoginValidator,
@@ -68,7 +69,11 @@ const loginUser = async (req, res) => {
       throw new Error('Invalid email or password.');
     }
 
-    return res.status(201).json({ name: user.name, email });
+    const token = jwt.sign({ _id: user._id }, 'jwtPrivateKey', {
+      expiresIn: '1h',
+    });
+
+    return res.status(201).json(token);
   } catch (error) {
     return res.status(500).json({ message: 'Login Error: ' + error?.message });
   }
