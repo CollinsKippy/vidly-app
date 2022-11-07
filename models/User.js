@@ -14,12 +14,14 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
+    minLength: 6,
+    maxLength: 96,
     required: true,
   },
   password: {
     type: String,
     minLength: 6,
-    maxLength: 32,
+    maxLength: 1024,
     required: true,
   },
 });
@@ -27,18 +29,27 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 /**
- * User Register API Validation
+ * User Register API Form Validation
  */
 
 const userRegisterValidator = Joi.object({
-  name: Joi.alphanum().min(6).max(20).required(),
-  email: Joi.alphanum().required(),
-  password: Joi.string().min(6).max(32).required(),
+  name: Joi.string().alphanum().min(6).max(30).required(),
+  email: Joi.string().email().min(6).max(96).required(),
+  password: Joi.string()
+    .min(6)
+    .max(96)
+    .required()
+    .pattern(new RegExp('^[a-zA-Z0-9]{5,96}$')),
+  confirmPassword: Joi.ref('password'),
 });
 
 const userLoginValidator = Joi.object({
-  email: Joi.alphanum().required(),
-  password: Joi.string().min(6).max(32).required(),
+  email: Joi.string().email().min(6).max(96).required(),
+  password: Joi.string()
+    .min(6)
+    .max(96)
+    .required()
+    .pattern(new RegExp('^[a-zA-Z0-9]{5,96}$')),
 });
 
 module.exports = {
