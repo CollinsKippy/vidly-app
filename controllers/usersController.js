@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const {
   User,
   userLoginValidator,
@@ -13,9 +14,29 @@ const {
 const registerUser = async (req, res) => {
   try {
     const value = await userRegisterValidator.validateAsync(req.body);
-    const newUser = await User.create(value);
 
-    return res.status(201).json(newUser);
+    const { name, email, password } = req.body;
+
+    // Ensure email does not already exist
+    const user = await User.findOne({ email: email });
+    if (user) {
+      res.status(400);
+      throw new Error(`User with email ${email} already exists.`);
+    }
+
+    // Hash and encrypt password before saving
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const newUser = await User.create({
+      name: name,
+      email: email,
+      password: hashedPassword,
+    });
+
+    // Return only user name and email - Destructuring :)
+
+    return res.status(201).json({ _id: newUser._id, name, email });
   } catch (error) {
     return res
       .status(500)
@@ -32,10 +53,22 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const value = await userLoginValidator.validateAsync(req.body);
-    const newUser = await User.find({ email: value?.email });
-    // Validate password from returned user object -bycrypt?
+    const { email, password } = req.body;
 
-    return res.status(201).json(newUser);
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      res.status(400);
+      throw new Error('Invalid email or password.');
+    }
+
+    // Validate password from returned user object -password vs hashedPassword?
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      res.status(400);
+      throw new Error('Invalid email or password.');
+    }
+
+    return res.status(201).json({ name: user.name, email });
   } catch (error) {
     return res.status(500).json({ message: 'Login Error: ' + error?.message });
   }

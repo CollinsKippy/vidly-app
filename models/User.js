@@ -45,11 +45,7 @@ const userRegisterValidator = Joi.object({
 
 const userLoginValidator = Joi.object({
   email: Joi.string().email().min(6).max(96).required(),
-  password: Joi.string()
-    .min(6)
-    .max(96)
-    .required()
-    .pattern(new RegExp('^[a-zA-Z0-9]{5,96}$')),
+  password: Joi.string().required(),
 });
 
 module.exports = {

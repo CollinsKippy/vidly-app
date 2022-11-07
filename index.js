@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 async function connectMongoDB() {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI);
-    console.log(`Connected to DB:`.cyan, conn.connection.name);
+    console.log(`Connected to DB: 😁`.cyan, conn.connection.name);
   } catch (err) {
     console.log('Error connecting to DB'.bgRed, err);
   }
@@ -31,4 +31,4 @@ app.use('/api/users', require('./routes/userRoute'));
 
 app.use(errorHandler);
 
-app.listen(port, () => console.log(`listening on port: ${port}. 😊`));
+app.listen(port, () => console.log(`listening on port: ${port}.`));
