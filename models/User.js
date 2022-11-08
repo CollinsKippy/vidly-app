@@ -29,6 +29,9 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  roles: {
+    type: [String], // e.g Moderator, Editor, etc.
+  },
 });
 
 userSchema.methods.generateAuthToken = function () {
