@@ -3,11 +3,18 @@ const mongoose = require('mongoose');
 const colors = require('colors');
 require('dotenv').config();
 const { errorHandler } = require('./middleware/errorHandler');
+const config = require('config');
 
 const app = express();
 const port = process.env.PORT || 5000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Environment Variable Check
+if (!config.get('jwtPrivateKey')) {
+  console.error('FATAL ERROR: jwtPrivateKey is not defined.');
+  process.exit(1);
+}
 
 // connect mongoose
 async function connectMongoDB() {
