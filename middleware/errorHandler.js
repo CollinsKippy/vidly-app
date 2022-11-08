@@ -8,6 +8,7 @@ const errorHandler = (err, req, res, next) => {
     message: message + `: ${req.url}`,
     stack: stackTrace,
   });
+  next();
 };
 
 module.exports = {

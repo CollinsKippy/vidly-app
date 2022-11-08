@@ -1,6 +1,4 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const config = require('config');
 const {
   User,
   userLoginValidator,
@@ -9,6 +7,9 @@ const {
 
 /**
  * Register New User
+ * @method POST
+ * @url /api/users/register
+ * @description uses bcrypt to hash password
  * @param {any} req the request object with user details
  * @param {any} res res object with status and json body
  * @returns Newly Created User or Error Message
@@ -26,7 +27,7 @@ const registerUser = async (req, res) => {
       throw new Error(`User with email ${email} already exists.`);
     }
 
-    // Hash and encrypt password before saving
+    // Hash password before saving
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -48,6 +49,9 @@ const registerUser = async (req, res) => {
 
 /**
  * Login User
+ * @method POST
+ * @url /api/users/login
+ * @description uses bcrypt to verify/compare password. Token generation is an extension method from userSchema
  * @param {any} req the request object with user credentials
  * @param {any} res res object with status and json body
  * @returns Jwt and Roles
@@ -63,18 +67,17 @@ const loginUser = async (req, res) => {
       throw new Error('Invalid email or password.');
     }
 
-    // Validate password from returned user object -password vs hashedPassword?
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
       res.status(400);
       throw new Error('Invalid email or password.');
     }
 
-    const token = jwt.sign({ _id: user._id }, config.get('jwtPrivateKey'), {
-      expiresIn: '1h',
-    });
+    const token = user.generateAuthToken();
 
-    return res.status(201).json(token);
+    return res
+      .status(201)
+      .json({ name: user?.name, email: user?.email, token, expiresIn: '1h' });
   } catch (error) {
     return res.status(500).json({ message: 'Login Error: ' + error?.message });
   }

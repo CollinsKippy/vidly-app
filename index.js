@@ -11,8 +11,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Environment Variable Check
-if (!config.get('jwtPrivateKey')) {
-  console.error('FATAL ERROR: jwtPrivateKey is not defined.');
+if (!process.env.JWT_PRIVATE_KEY) {
+  console.error('FATAL ERROR: JWT_PRIVATE_KEY is not defined.');
   process.exit(1);
 }
 

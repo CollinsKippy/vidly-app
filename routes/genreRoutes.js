@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const { authHandler } = require('../middleware/authHandler');
+
 const {
   getGenres,
   getSingle,
@@ -10,8 +12,8 @@ const {
 
 router.get('/', getGenres);
 router.get('/:id', getSingle);
-router.post('/', createGenre);
-router.put('/:id', updateGenre);
-router.delete('/:id', deleteGenre);
+router.post('/', authHandler, createGenre);
+router.put('/:id', authHandler, updateGenre);
+router.delete('/:id', authHandler, deleteGenre);
 
 module.exports = router;
