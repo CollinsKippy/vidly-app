@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const colors = require('colors');
 require('dotenv').config();
 const { errorHandler } = require('./middleware/errorHandler');
-const { authHandler } = require('./middleware/authHandler');
+const { myAuthHandler } = require('./middleware/authHandler');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -29,8 +29,6 @@ async function connectMongoDB() {
 connectMongoDB();
 
 app.get('/', (req, res) => res.send(`Vidly App Server is running`));
-
-app.use(authHandler);
 
 app.use('/api/genres', require('./routes/genreRoutes'));
 app.use('/api/movies', require('./routes/movieRoutes'));

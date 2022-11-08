@@ -1,4 +1,5 @@
 const express = require('express');
+const { myAuthHandler } = require('../middleware/authHandler');
 const {
   getRentals,
   getSingleRental,
@@ -10,8 +11,8 @@ const router = express.Router();
 
 router.get('/', getRentals);
 router.get('/:id', getSingleRental);
-router.post('/', createRental);
-router.put('/:id', updateRental);
-router.delete('/:id', deleteRental);
+router.post('/', myAuthHandler, createRental);
+router.put('/:id', myAuthHandler, updateRental);
+router.delete('/:id', myAuthHandler, deleteRental);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const express = require('express');
+const { myAuthHandler } = require('../middleware/authHandler');
 const {
   getCustomers,
   getSingleCustomer,
@@ -10,8 +11,8 @@ const router = express.Router();
 
 router.get('/', getCustomers);
 router.get('/:id', getSingleCustomer);
-router.post('/', createCustomer);
-router.put('/:id', updateCustomer);
-router.delete('/:id', deleteCustomer);
+router.post('/', myAuthHandler, createCustomer);
+router.put('/:id', myAuthHandler, updateCustomer);
+router.delete('/:id', myAuthHandler, deleteCustomer);
 
 module.exports = router;
