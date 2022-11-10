@@ -1,4 +1,5 @@
 const { Schema } = require('mongoose');
+const { asyncHandler } = require('../middleware/asyncHandler');
 const { Genre, genreJoiValidator } = require('../models/Genre');
 
 /**
@@ -9,16 +10,10 @@ const { Genre, genreJoiValidator } = require('../models/Genre');
  * @param {any} res the response object
  * @returns list of genres
  */
-const getGenres = async (req, res) => {
-  try {
-    const genres = await Genre.find();
-    return res.status(200).json(genres);
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: 'Error occurred updating Genres:' + error });
-  }
-};
+const getGenres = asyncHandler(async (req, res) => {
+  const genres = await Genre.find();
+  return res.status(200).json(genres);
+});
 
 /**
  * Get Single Genre
