@@ -1,3 +1,4 @@
+const { asyncHandler } = require('../middleware/asyncHandler');
 const { Customer, customerJoiValidator } = require('../models/Customer');
 
 /**
@@ -8,16 +9,10 @@ const { Customer, customerJoiValidator } = require('../models/Customer');
  * @param {any} res response object
  * @returns List of Customers
  */
-const getCustomers = async (req, res) => {
-  try {
-    const customers = await Customer.find();
-    return res.status(200).json(customers);
-  } catch (error) {
-    return res.status(500).json({
-      message: 'Error retrieving customers: ' + error?.message,
-    });
-  }
-};
+const getCustomers = asyncHandler(async (req, res) => {
+  const customers = await Customer.find();
+  return res.status(200).json(customers);
+});
 
 /**
  * Returns single customer
@@ -27,24 +22,18 @@ const getCustomers = async (req, res) => {
  * @param {any} res response object
  * @returns Single Customer
  */
-const getSingleCustomer = async (req, res) => {
-  try {
-    const id = req.params.id;
+const getSingleCustomer = asyncHandler(async (req, res) => {
+  const id = req.params.id;
 
-    const customer = await Customer.findById(id);
+  const customer = await Customer.findById(id);
 
-    if (!customer) {
-      res.status(404);
-      throw new Error(`Customer with id ${id} not found.`);
-    }
-
-    return res.status(200).json(customer);
-  } catch (error) {
-    return res.status(500).json({
-      message: 'Error retrieving customer: ' + error?.message,
-    });
+  if (!customer) {
+    res.status(404);
+    throw new Error(`Customer with id ${id} not found.`);
   }
-};
+
+  return res.status(200).json(customer);
+});
 
 /**
  * Creates new customer
@@ -54,18 +43,12 @@ const getSingleCustomer = async (req, res) => {
  * @param {any} res response object
  * @returns New of Customer
  */
-const createCustomer = async (req, res) => {
-  try {
-    const value = await customerJoiValidator.validateAsync(req.body);
-    const customer = await Customer.create(value);
+const createCustomer = asyncHandler(async (req, res) => {
+  const value = await customerJoiValidator.validateAsync(req.body);
+  const customer = await Customer.create(value);
 
-    return res.status(200).json(customer);
-  } catch (error) {
-    return res.status(500).json({
-      message: 'Error creating customer: ' + error?.message,
-    });
-  }
-};
+  return res.status(200).json(customer);
+});
 
 /**
  * Update customer
@@ -75,26 +58,20 @@ const createCustomer = async (req, res) => {
  * @param {any} res response object
  * @returns List of Customers
  */
-const updateCustomer = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const value = await customerJoiValidator.validateAsync(req.body);
-    const customer = await Customer.findByIdAndUpdate(id, value, {
-      new: true,
-    });
+const updateCustomer = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+  const value = await customerJoiValidator.validateAsync(req.body);
+  const customer = await Customer.findByIdAndUpdate(id, value, {
+    new: true,
+  });
 
-    if (!customer) {
-      res.status(400);
-      throw new Error('Invalid customer updated.');
-    }
-
-    return res.status(200).json(customer);
-  } catch (error) {
-    return res.status(500).json({
-      message: 'Error updating customer: ' + error?.message,
-    });
+  if (!customer) {
+    res.status(400);
+    throw new Error('Invalid customer updated.');
   }
-};
+
+  return res.status(200).json(customer);
+});
 
 /**
  * Deletes a customer
@@ -104,23 +81,17 @@ const updateCustomer = async (req, res) => {
  * @param {any} res response object
  * @returns Deleted Customer
  */
-const deleteCustomer = async (req, res) => {
-  try {
-    const id = req.params.id;
+const deleteCustomer = asyncHandler(async (req, res) => {
+  const id = req.params.id;
 
-    const customer = await Customer.findByIdAndRemove(id);
-    if (!customer) {
-      res.status(400);
-      throw new Error(`Customer with id ${id} not found.`);
-    }
-
-    return res.status(200).json(customer);
-  } catch (error) {
-    return res.status(500).json({
-      message: 'Error deleting customer: ' + error?.message,
-    });
+  const customer = await Customer.findByIdAndRemove(id);
+  if (!customer) {
+    res.status(400);
+    throw new Error(`Customer with id ${id} not found.`);
   }
-};
+
+  return res.status(200).json(customer);
+});
 
 module.exports = {
   getCustomers,

@@ -23,26 +23,20 @@ const getGenres = asyncHandler(async (req, res) => {
  * @param {any} res the response object
  * @returns single genre
  */
-const getSingle = async (req, res) => {
+const getSingle = asyncHandler(async (req, res) => {
   const id = req.params.id;
   if (!id) {
     res.status(400);
     throw new Error('Invalid Id.');
   }
 
-  try {
-    const genre = await Genre.findById(id);
-    if (!genre) {
-      res.status(404);
-      throw new Error('Genre not found.');
-    }
-    return res.status(200).json(genre);
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: 'Error occurred updating Genres:' + error });
+  const genre = await Genre.findById(id);
+  if (!genre) {
+    res.status(404);
+    throw new Error('Genre not found.');
   }
-};
+  return res.status(200).json(genre);
+});
 
 /**
  * Create Single Genre
@@ -52,15 +46,11 @@ const getSingle = async (req, res) => {
  * @param {any} res the response object
  * @returns single genre
  */
-const createGenre = async (req, res, next) => {
-  try {
-    const value = await genreJoiValidator.validateAsync(req.body);
-    const newGenre = await Genre.create(value);
-    return res.status(201).json(newGenre);
-  } catch (error) {
-    return res.status(500).json({ message: 'Error Creating Genre: ' + error });
-  }
-};
+const createGenre = asyncHandler(async (req, res) => {
+  const value = await genreJoiValidator.validateAsync(req.body);
+  const newGenre = await Genre.create(value);
+  return res.status(201).json(newGenre);
+});
 
 /**
  * Update Single Genre
@@ -70,32 +60,26 @@ const createGenre = async (req, res, next) => {
  * @param {any} res the response object
  * @returns updated single genre
  */
-const updateGenre = async (req, res) => {
-  try {
-    const id = req.params.id;
-    console.log(`${id}`);
-    if (typeof id === 'null' || typeof id === 'undefined') {
-      res.status(400);
-      throw new Error('Invalid Id Provided.');
-    }
+const updateGenre = asyncHandler(async (req, res) => {
+  const id = req.params?.id;
 
-    const value = await genreJoiValidator.validateAsync(req.body);
-
-    const updatedGenre = await Genre.findByIdAndUpdate(id, value, {
-      new: true,
-    });
-
-    if (!updatedGenre) {
-      res.status(404);
-      throw new Error('Genre not found');
-    }
-    return res.status(200).json(updatedGenre);
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: 'Error occurred updating Genres:' + error });
+  if (!id) {
+    res.status(400);
+    throw new Error('Invalid Id Provided.');
   }
-};
+
+  const value = await genreJoiValidator.validateAsync(req.body);
+
+  const updatedGenre = await Genre.findByIdAndUpdate(id, value, {
+    new: true,
+  });
+
+  if (!updatedGenre) {
+    res.status(404);
+    throw new Error('Genre not found');
+  }
+  return res.status(200).json(updatedGenre);
+});
 
 /**
  * Delete Single Genre
@@ -105,8 +89,8 @@ const updateGenre = async (req, res) => {
  * @param {any} res the response object
  * @returns deleted genre
  */
-const deleteGenre = async (req, res) => {
-  const id = req.params.id;
+const deleteGenre = asyncHandler(async (req, res) => {
+  const id = req.params?.id;
   if (!id) {
     res.status(400);
     throw new Error('Incorrect id provided.');
@@ -124,7 +108,7 @@ const deleteGenre = async (req, res) => {
       .status(500)
       .json({ message: 'Error occurred updating Genres:' + error });
   }
-};
+});
 
 // const validateSchema = async (genre) => {
 //   return await genreJoiValidator.validateAsync(genre);
