@@ -3,7 +3,9 @@ const mongoose = require('mongoose');
 const colors = require('colors');
 require('dotenv').config();
 const { errorHandler } = require('./middleware/errorHandler');
-const { myAuthHandler } = require('./middleware/authHandler');
+const { myLogger } = require('./utils/winstonLogger');
+const winston = require('winston');
+require('winston-mongodb');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -19,8 +21,12 @@ if (!process.env.JWT_PRIVATE_KEY) {
 // connect mongoose
 async function connectMongoDB() {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI);
+    const conn = await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log(`Connected to DB: 😁`.cyan, conn.connection.name);
+    myLogger.info(`Connected to DB: ${conn?.connection?.name}`);
   } catch (err) {
     console.log('Error connecting to DB'.bgRed, err);
   }

@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { User } = require('../models/User');
+const { asyncHandler } = require('./asyncHandler');
 
 /**
  * Middle that checks whether user has a valid token
@@ -8,31 +9,25 @@ const { User } = require('../models/User');
  * @param {any} next reference to succeeding function
  * @returns void or 401 Unauthorized
  */
-const myAuthHandler = async (req, res, next) => {
-  try {
-    const token = req.headers?.authorization?.split(' ')[1]; // get token component only; not Bearer part
-    if (!token) {
-      res.status(401);
-      throw new Error('No token provided.');
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
-
-    res.status(200);
-    req.user = await User.findById(decoded.sub).select({
-      name: 1,
-      email: 1,
-      isAdmin: 1,
-      password: -1,
-    });
-
-    next();
-  } catch (error) {
-    return res
-      .status(401)
-      .json({ message: 'Invalid Token: ' + error?.message });
+const myAuthHandler = asyncHandler(async (req, res, next) => {
+  const token = req.headers?.authorization?.split(' ')[1]; // get token component only; not Bearer part
+  if (!token) {
+    res.status(401);
+    throw new Error('No token provided.');
   }
-};
+
+  const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
+
+  res.status(200);
+  req.user = await User.findById(decoded.sub).select({
+    name: 1,
+    email: 1,
+    isAdmin: 1,
+    password: -1,
+  });
+
+  next();
+});
 
 /**
  * Middle that checks whether user has Admin role
