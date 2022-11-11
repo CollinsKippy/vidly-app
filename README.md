@@ -8,3 +8,4 @@ Data Validation with Joi <br/>
 Authentication and Authorization with JWT <br/>
 Environment Setup <br/>
 Asynchronous Javascript (Async-Await) <br/>
+Error Handling and Logging with Winston
