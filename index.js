@@ -4,8 +4,6 @@ const colors = require('colors');
 require('dotenv').config();
 const { errorHandler } = require('./middleware/errorHandler');
 const { myLogger } = require('./utils/winstonLogger');
-const winston = require('winston');
-require('winston-mongodb');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -26,7 +24,7 @@ async function connectMongoDB() {
       useUnifiedTopology: true,
     });
     console.log(`Connected to DB: 😁`.cyan, conn.connection.name);
-    myLogger.info(`Connected to DB: ${conn?.connection?.name}`);
+    // myLogger.info(`Connected to DB: ${conn?.connection?.name}`);
   } catch (err) {
     console.log('Error connecting to DB'.bgRed, err);
   }
