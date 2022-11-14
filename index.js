@@ -12,9 +12,23 @@ app.use(express.urlencoded({ extended: true }));
 
 // Environment Variable Check
 if (!process.env.JWT_PRIVATE_KEY) {
-  console.error('FATAL ERROR: JWT_PRIVATE_KEY is not defined.');
+  myLogger.error('FATAL ERROR: JWT_PRIVATE_KEY is not defined.');
   process.exit(1);
 }
+
+// Uncaught Exception
+process.on('uncaughtException', (ex) => {
+  myLogger.error('UNCAUGHT EXCEPTION occurred! Please check your code.');
+  process.exit(1);
+});
+
+// Unhandled Promise Rejection
+process.on('unhandledRejection', (ex) => {
+  myLogger.error(
+    'UNHANDLED PROMISE REJECTION occurred! Please check your code ( especially try-catch blocks).'
+  );
+  process.exit(1);
+});
 
 // connect mongoose
 async function connectMongoDB() {
