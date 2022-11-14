@@ -18,6 +18,7 @@ if (!process.env.JWT_PRIVATE_KEY) {
 
 // Uncaught Exception
 process.on('uncaughtException', (ex) => {
+  console.log('Uncaught Exception...');
   myLogger.error('UNCAUGHT EXCEPTION occurred! Please check your code.');
   process.exit(1);
 });
@@ -29,6 +30,8 @@ process.on('unhandledRejection', (ex) => {
   );
   process.exit(1);
 });
+
+// throw new Error('Something wrong happened!');
 
 // connect mongoose
 async function connectMongoDB() {

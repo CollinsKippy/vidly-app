@@ -6,7 +6,7 @@ const errorHandler = (err, req, res, next) => {
     err?.message?.length > 0 ? err?.message : 'An unknown error occurred.';
   const stackTrace = process.env.NODE_ENV === 'production' ? null : err?.stack;
 
-  myLogger.error(message); // log to file
+  myLogger.error(message, err); // log to file
 
   res.status(status).json({
     message: message + `: ${req.url}`,
