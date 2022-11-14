@@ -11,7 +11,7 @@ const { Genre, genreJoiValidator } = require('../models/Genre');
  * @returns list of genres
  */
 const getGenres = asyncHandler(async (req, res) => {
-  throw new Error('Testing Winston Logger.');
+  // throw new Error('Testing Winston Logger.');
   const genres = await Genre.find();
   return res.status(200).json(genres);
 });

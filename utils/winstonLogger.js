@@ -20,11 +20,6 @@ const myLogger = winston.createLogger({
       maxSize: '2m',
       maxFiles: '1d',
     }),
-    new winston.transports.File({
-      filename: 'logs/exceptions.log',
-      handleExceptions: true,
-      handleRejections: true,
-    }),
     new winston.transports.MongoDB({
       db: process.env.MONGO_URI_LOG,
       level: 'error',
