@@ -26,10 +26,12 @@ process.on('uncaughtException', (ex) => {
 
 // Unhandled Promise Rejection
 process.on('unhandledRejection', (ex) => {
-  console.log(`${ex?.message}`.red);
-  myLogger.error(ex?.message, ex);
-  process.exit(1);
+  throw ex;
 });
+
+// throw new Error('Uncaught Exception!');
+// const p = Promise.reject('rejected promise');
+// p.then(() => 'do something...').catch((err) => 'caught it...');
 
 // connect mongoose
 async function connectMongoDB() {

@@ -25,7 +25,22 @@ const myLogger = winston.createLogger({
       level: 'error',
     }),
   ],
+  exceptionHandlers: [
+    new winston.transports.File({ filename: 'logs/exceptions.log' }),
+  ],
+  rejectionHandlers: [
+    new winston.transports.File({ filename: 'logs/rejections.log' }),
+  ],
+  exitOnError: false,
 });
+
+if (process.env.NODE_ENV !== 'production') {
+  myLogger.add(
+    new winston.transports.Console({
+      format: winston.format.simple(),
+    })
+  );
+}
 
 module.exports = {
   myLogger,
