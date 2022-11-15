@@ -9,25 +9,28 @@ const { asyncHandler } = require('./asyncHandler');
  * @param {any} next reference to succeeding function
  * @returns void or 401 Unauthorized
  */
-const myAuthHandler = asyncHandler(async (req, res, next) => {
+const myAuthHandler = async (req, res, next) => {
   const token = req.headers?.authorization?.split(' ')[1]; // get token component only; not Bearer part
   if (!token) {
     res.status(401);
     throw new Error('No token provided.');
   }
 
-  const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
 
-  res.status(200);
-  req.user = await User.findById(decoded.sub).select({
-    name: 1,
-    email: 1,
-    isAdmin: 1,
-    password: -1,
-  });
-
-  next();
-});
+    res.status(200);
+    req.user = await User.findById(decoded.sub).select({
+      name: 1,
+      email: 1,
+      isAdmin: 1,
+      password: -1,
+    });
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
 
 /**
  * Middle that checks whether user has Admin role

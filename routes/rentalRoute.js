@@ -9,8 +9,8 @@ const {
 } = require('../controllers/rentalsController');
 const router = express.Router();
 
-router.get('/', getRentals);
-router.get('/:id', getSingleRental);
+router.get('/', myAuthHandler, getRentals);
+router.get('/:id', myAuthHandler, getSingleRental);
 router.post('/', myAuthHandler, createRental);
 router.put('/:id', myAuthHandler, updateRental);
 router.delete('/:id', [myAuthHandler, adminHandler], deleteRental);
