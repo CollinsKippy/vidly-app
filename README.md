@@ -1,5 +1,5 @@
 # Vidly App - Movie Rental App
-Part of a NodeJS Course by Mosh Hamedani
+Part of a NodeJS Course
 ## Concepts Covered
 ExpressJS <br/>
 REST APIs and CRUD Operations <br/>
