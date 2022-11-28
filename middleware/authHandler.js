@@ -20,7 +20,7 @@ const myAuthHandler = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
 
     res.status(200);
-    req.user = await User.findById(decoded.sub).select({
+    req.user = await User.findById(decoded._id).select({
       name: 1,
       email: 1,
       isAdmin: 1,
