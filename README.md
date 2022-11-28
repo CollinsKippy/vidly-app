@@ -9,5 +9,6 @@ Authentication and Authorization with JWT <br/>
 Environment Setup <br/>
 Asynchronous Javascript (Async-Await) <br/>
 Error Handling and Logging with Winston
+Unit and Integration Testing with Jest
 
 ### Some npm packages used in the course are outdated. Therefore updates have been made to the code to reflect the newer package usage.
