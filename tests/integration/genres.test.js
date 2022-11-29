@@ -11,7 +11,7 @@ const { Genre } = require('../../models/Genre');
 
 let server;
 
-describe('/api/genres controller', () => {
+describe('Genres controller', () => {
   beforeEach(() => {
     server = require('../../index');
   });
@@ -28,21 +28,31 @@ describe('/api/genres controller', () => {
         { name: 'Genre1' },
         { name: 'Genre2' },
       ]);
-
-      const res = await request(server).get('/api/genres');
+      const url = `/api/genres`;
+      const res = await request(server).get(url);
 
       expect(res.status).toBe(200);
       expect(res.body.length).toBe(2);
       expect(res.body.some((g) => g.name === 'genre1'));
       expect(res.body.some((g) => g.name === 'genre2'));
     });
+  });
 
-    it('should return a 404 not found if wrong ID is supplied', async () => {
-      const id = '6358e0bf5d845de123c430b3';
-      const url = `/api/genres/${id}`;
+  // GET SINGLE
+  describe('GET SINGLE', () => {
+    it('should return a genre if valid id is supplied', async () => {
+      const genre = new Genre({ name: 'Genre3' });
+      await genre.save();
+
+      const url = `/api/genres/${genre._id}`;
+
       const res = await request(server).get(url);
 
-      expect(res.status).toBe(404);
+      console.log(res.body);
+
+      expect(res.status).toBe(200);
+      expect(res.body).toMatchObject({ name: genre.name });
+      expect(res.body).toHaveProperty('name', genre.name);
     });
   });
 
