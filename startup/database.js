@@ -19,7 +19,7 @@ const connectDB = async () => {
     console.log(`Connected to DB: 😁`.cyan, conn.connection.name);
     myLogger.info(`Connected to DB: ${conn?.connection?.name}`);
   } catch (err) {
-    myLogger.error('Error connecting to DB.');
+    myLogger.error('Error connecting to DB.', err);
   }
 };
 

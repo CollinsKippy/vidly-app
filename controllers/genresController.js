@@ -31,7 +31,7 @@ const getSingle = asyncHandler(async (req, res) => {
     throw new Error('Invalid Id.');
   }
 
-  const genre = await Genre.findById(id);
+  const genre = await Genre.find({ _id: id });
   if (!genre) {
     res.status(404);
     throw new Error('Genre not found.');
