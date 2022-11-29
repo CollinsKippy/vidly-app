@@ -1,7 +1,7 @@
 const { myLogger } = require('../utils/winstonLogger');
 
 const errorHandler = (err, req, res, next) => {
-  const status = isNaN(res.status) ? 500 : res.status;
+  const status = res.statusCode ? res.statusCode : 500;
   const message =
     err?.message?.length > 0 ? err?.message : 'An unknown error occurred.';
   const stackTrace = process.env.NODE_ENV === 'production' ? null : err?.stack;

@@ -54,6 +54,13 @@ describe('Genres controller', () => {
       expect(res.body).toMatchObject({ name: genre.name });
       expect(res.body).toHaveProperty('name', genre.name);
     });
+    it('should return a 400 if invalid id is supplied', async () => {
+      const url = `/api/genres/1`;
+
+      const res = await request(server).get(url);
+
+      expect(res.status).toBe(400);
+    });
   });
 
   // POST

@@ -1,29 +1,29 @@
 const winston = require('winston');
-// require('winston-mongodb');
-// require('winston-daily-rotate-file');
+require('winston-mongodb');
+require('winston-daily-rotate-file');
 
 const myLogger = winston.createLogger({
   level: 'info',
   transports: [
-    // new winston.transports.DailyRotateFile({
-    //   level: 'error',
-    //   filename: 'logs/error-%DATE%.log',
-    //   datePattern: 'YYYY-MM-DD-HH',
-    //   zippedArchive: true,
-    //   maxSize: '2m',
-    //   maxFiles: '1d',
-    // }),
-    // new winston.transports.DailyRotateFile({
-    //   filename: 'logs/combined-%DATE%.log',
-    //   datePattern: 'YYYY-MM-DD-HH',
-    //   zippedArchive: true,
-    //   maxSize: '2m',
-    //   maxFiles: '1d',
-    // }),
-    // new winston.transports.MongoDB({
-    //   db: process.env.MONGO_URI_LOG_TEST,
-    //   level: 'error',
-    // }),
+    new winston.transports.DailyRotateFile({
+      level: 'error',
+      filename: 'logs/error-%DATE%.log',
+      datePattern: 'YYYY-MM-DD-HH',
+      zippedArchive: true,
+      maxSize: '2m',
+      maxFiles: '1d',
+    }),
+    new winston.transports.DailyRotateFile({
+      filename: 'logs/combined-%DATE%.log',
+      datePattern: 'YYYY-MM-DD-HH',
+      zippedArchive: true,
+      maxSize: '2m',
+      maxFiles: '1d',
+    }),
+    new winston.transports.MongoDB({
+      db: process.env.MONGO_URI_LOG_TEST,
+      level: 'error',
+    }),
   ],
   exceptionHandlers: [
     new winston.transports.File({ filename: 'logs/exceptions.log' }),
