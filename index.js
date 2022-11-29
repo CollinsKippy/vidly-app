@@ -11,4 +11,8 @@ require('./startup/logging')();
 require('./startup/database')();
 require('./startup/routes')(app);
 
-app.listen(port, () => myLogger.info(`listening on port: ${port}.`));
+const server = app.listen(port, () =>
+  myLogger.info(`listening on port: ${port}.`)
+);
+
+module.exports = server;
