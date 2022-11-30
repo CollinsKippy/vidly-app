@@ -8,11 +8,16 @@ const {
   updateGenre,
   deleteGenre,
 } = require('../controllers/genresController');
+const validateObjectIdHandler = require('../middleware/validateObjectIdHandler');
 
 router.get('/', getGenres);
-router.get('/:id', getSingle);
+router.get('/:id', validateObjectIdHandler, getSingle);
 router.post('/', myAuthHandler, createGenre);
-router.put('/:id', myAuthHandler, updateGenre);
-router.delete('/:id', [myAuthHandler, adminHandler], deleteGenre);
+router.put('/:id', [validateObjectIdHandler, myAuthHandler], updateGenre);
+router.delete(
+  '/:id',
+  [validateObjectIdHandler, myAuthHandler, adminHandler],
+  deleteGenre
+);
 
 module.exports = router;

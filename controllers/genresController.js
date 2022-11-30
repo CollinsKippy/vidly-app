@@ -1,7 +1,6 @@
 const { Schema } = require('mongoose');
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { Genre, genreJoiValidator } = require('../models/Genre');
-const mongoose = require('mongoose');
 
 /**
  * Get List of Genres
@@ -27,10 +26,10 @@ const getGenres = asyncHandler(async (req, res) => {
  */
 const getSingle = asyncHandler(async (req, res) => {
   const id = req.params.id;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    res.status(400);
-    throw new Error('Invalid Id.');
-  }
+  // if (!mongoose.Types.ObjectId.isValid(id)) {
+  //   res.status(400);
+  //   throw new Error('Invalid Id.');
+  // }
 
   const genre = await Genre.findOne({ _id: id });
   if (!genre) {
