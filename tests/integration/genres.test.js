@@ -7,16 +7,18 @@
  * 4. Also, clean up the db in the afterEach() function - to prevent multiple data entries
  */
 const request = require('supertest');
+const app = require('../../app');
+
 const { Genre, genreJoiValidator } = require('../../models/Genre');
 
-let server;
+// let server;
 
 describe('Genres controller', () => {
   beforeEach(() => {
-    server = require('../../index');
+    // server = require('../../index');
   });
   afterEach(async () => {
-    server.close();
+    // server.close();
 
     await Genre.deleteMany({});
   });
@@ -29,7 +31,7 @@ describe('Genres controller', () => {
         { name: 'Genre2' },
       ]);
       const url = `/api/genres`;
-      const res = await request(server).get(url);
+      const res = await request(app).get(url);
 
       expect(res.status).toBe(200);
       expect(res.body.length).toBe(2);
@@ -43,7 +45,7 @@ describe('Genres controller', () => {
     it('should return a 400 if invalid id is supplied', async () => {
       const url = `/api/genres/1`;
 
-      const res = await request(server).get(url);
+      const res = await request(app).get(url);
 
       expect(res.status).toBe(400);
     });
@@ -53,7 +55,7 @@ describe('Genres controller', () => {
       await genre.save();
 
       const url = `/api/genres/${genre._id}`;
-      const res = await request(server).get(url);
+      const res = await request(app).get(url);
 
       expect(res.status).toBe(200);
       expect(res.body).toMatchObject({ name: genre.name });
@@ -62,18 +64,20 @@ describe('Genres controller', () => {
   });
 
   // POST
-  describe('POST', () => {
-    it('should throw an error if genre length is less than 3 characters', async () => {
-      const genre = { name: 'Ge' };
+  // describe('POST', () => {
+  //   // get jwt token
+  //   let jwtToken;
 
-      expect.assertions(1);
-      try {
-        await genreJoiValidator.validateAsync(genre);
-      } catch (error) {
-        expect(error).toBeDefined()
-      }
-    });
-  });
+  //   beforeEach(async () => {
+  //     const email = 'collins.kippy@outlook.com';
+  //     const password = 'Pass1235';
+
+  //     const url = '/api/users';
+  //     const res = await request(server).post(url).send({ email, password });
+
+  //     jwtToken = res?.token;
+  //   });
+  // });
   // PUT
 
   // DELETE
