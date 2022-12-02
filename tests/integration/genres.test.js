@@ -7,7 +7,7 @@
  * 4. Also, clean up the db in the afterEach() function - to prevent multiple data entries
  */
 const request = require('supertest');
-const { Genre } = require('../../models/Genre');
+const { Genre, genreJoiValidator } = require('../../models/Genre');
 
 let server;
 
@@ -40,21 +40,6 @@ describe('Genres controller', () => {
 
   // GET SINGLE
   describe('GET SINGLE', () => {
-    it('should return a genre if valid id is supplied', async () => {
-      const genre = new Genre({ name: 'Genre3' });
-      await genre.save();
-
-      const url = `/api/genres/${genre._id}`;
-
-      const res = await request(server).get(url);
-
-      console.log(res.body);
-
-      expect(res.status).toBe(200);
-      expect(res.body).toMatchObject({ name: genre.name });
-      expect(res.body).toHaveProperty('name', genre.name);
-    });
-    
     it('should return a 400 if invalid id is supplied', async () => {
       const url = `/api/genres/1`;
 
@@ -62,10 +47,33 @@ describe('Genres controller', () => {
 
       expect(res.status).toBe(400);
     });
+
+    it('should return a genre if valid id is supplied', async () => {
+      const genre = new Genre({ name: 'Genre3' });
+      await genre.save();
+
+      const url = `/api/genres/${genre._id}`;
+      const res = await request(server).get(url);
+
+      expect(res.status).toBe(200);
+      expect(res.body).toMatchObject({ name: genre.name });
+      expect(res.body).toHaveProperty('name', genre.name);
+    });
   });
 
   // POST
+  describe('POST', () => {
+    it('should throw an error if genre length is less than 3 characters', async () => {
+      const genre = { name: 'Ge' };
 
+      expect.assertions(1);
+      try {
+        await genreJoiValidator.validateAsync(genre);
+      } catch (error) {
+        expect(error).toBeDefined()
+      }
+    });
+  });
   // PUT
 
   // DELETE

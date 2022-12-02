@@ -11,7 +11,6 @@ const { Genre, genreJoiValidator } = require('../models/Genre');
  * @returns list of genres
  */
 const getGenres = asyncHandler(async (req, res) => {
-  // throw new Error('Testing Winston Logger.');
   const genres = await Genre.find();
   return res.status(200).json(genres);
 });
@@ -62,13 +61,6 @@ const createGenre = asyncHandler(async (req, res) => {
  * @returns updated single genre
  */
 const updateGenre = asyncHandler(async (req, res) => {
-  const id = req.params?.id;
-
-  if (!id) {
-    res.status(400);
-    throw new Error('Invalid Id Provided.');
-  }
-
   const value = await genreJoiValidator.validateAsync(req.body);
 
   const updatedGenre = await Genre.findByIdAndUpdate(id, value, {
@@ -91,12 +83,6 @@ const updateGenre = asyncHandler(async (req, res) => {
  * @returns deleted genre
  */
 const deleteGenre = asyncHandler(async (req, res) => {
-  const id = req.params?.id;
-  if (!id) {
-    res.status(400);
-    throw new Error('Incorrect id provided.');
-  }
-
   try {
     const removedGenre = await Genre.findByIdAndRemove(id);
     if (!removedGenre) {
