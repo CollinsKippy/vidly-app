@@ -35,13 +35,13 @@ const myLogger = winston.createLogger({
 });
 
 if (process.env.NODE_ENV !== 'production') {
-  myLogger.add(
-    new winston.transports.Console({
-      format: winston.format.simple(),
-      // colorize: true,
-      // prettyPrint: true,
-    })
-  );
+  // myLogger.add(
+  //   new winston.transports.Console({
+  //     format: winston.format.simple(),
+  //     // colorize: true,
+  //     // prettyPrint: true,
+  //   })
+  // );
 }
 
 module.exports = {

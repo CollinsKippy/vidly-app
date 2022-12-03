@@ -58,7 +58,7 @@ const userRegisterValidator = Joi.object({
     .max(96)
     .required()
     .pattern(new RegExp('^[a-zA-Z0-9]{5,96}$')),
-  confirmPassword: Joi.ref('password'),
+  confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
 });
 
 const userLoginValidator = Joi.object({

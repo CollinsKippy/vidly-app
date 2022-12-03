@@ -15,6 +15,7 @@ describe('Users Controller', () => {
     name = 'Kennedy';
     email = 'kennedy@domain.com';
     password = 'Kennedy111';
+    confirmPassword = password;
   });
 
   afterEach(async () => {
@@ -23,10 +24,10 @@ describe('Users Controller', () => {
     await User.deleteMany({});
   });
 
-  describe('user registration', () => {
+  describe('USER REGISTRATION', () => {
     it('should thow a 400 Bad Request if user email already exists in ', async () => {
-      const user = { name, email, password };
-      const user2 = { name, email, password };
+      const user = { name, email, password, confirmPassword };
+      const user2 = { name, email, password, confirmPassword };
 
       const firstUser = await User.create(user);
 
