@@ -35,10 +35,18 @@ describe('Users Controller', () => {
       const res = await request(app).post(url).send(user2);
 
       expect(res.status).toBe(400);
-      // expect(res.message).toMatch(/exists/);
+      expect(res.text).toMatch(/email/);
     });
 
-    // it('should register user with valid user details', () => {});
+    it('should register user with valid user details', async () => {
+      const user = { name, email, password, confirmPassword };
+
+      const url = '/api/users/register';
+      const res = await request(app).post(url).send(user);
+
+      expect(res.status).toBe(201);
+      expect(res.body).toMatchObject({ name, email });
+    });
   });
 
   describe('user login', () => {});
