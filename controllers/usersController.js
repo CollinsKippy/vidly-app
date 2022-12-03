@@ -64,7 +64,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const isValid = await bcrypt.compare(password, user.password);
   if (!isValid) {
     res.status(400);
-    throw new Error('Invalid email or password.');
+    throw new Error('Wrong email or password.');
   }
 
   const token = user.generateAuthToken();

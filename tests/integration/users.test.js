@@ -60,6 +60,7 @@ describe('Users Controller', () => {
       expect(response.status).toBe(400);
       expect(response.text).toMatch(/invalid/i);
     });
+
     it('it should return 400 Bad Request if invalid password is supplied', async () => {
       const user = { email, password: '1111222ABDCD' };
       const url = '/api/users/login';
@@ -68,6 +69,30 @@ describe('Users Controller', () => {
       expect.assertions(2);
       expect(response.status).toBe(400);
       expect(response.text).toMatch(/invalid/i);
+    });
+
+    it('it should return user object with token for valid credentials', async () => {
+      const userReg = { name, password, email, confirmPassword };
+      const registerUrl = '/api/users/register';
+
+      const newUserResponse = await request(app)
+        .post(registerUrl)
+        .send(userReg);
+
+      const loginUrl = '/api/users/login';
+      const credentials = {
+        email: email,
+        password: password,
+      };
+
+      const response = await request(app).post(loginUrl).send(credentials);
+
+      expect.assertions(4);
+
+      expect(response.status).toBe(201);
+      expect(response.body).toMatchObject({ email });
+      expect(response.body).toMatchObject({ name });
+      expect(response.body.token).toBeTruthy();
     });
   });
 });
