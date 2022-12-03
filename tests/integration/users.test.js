@@ -49,5 +49,25 @@ describe('Users Controller', () => {
     });
   });
 
-  describe('user login', () => {});
+  describe('USER LOGIN', () => {
+    it('it should return 400 Bad Request if invalid email is supplied', async () => {
+      const user = { email: 'eeeeeeeee@dom.com', password };
+
+      const url = '/api/users/login';
+      const response = await request(app).post(url).send(user);
+
+      expect.assertions(2);
+      expect(response.status).toBe(400);
+      expect(response.text).toMatch(/invalid/i);
+    });
+    it('it should return 400 Bad Request if invalid password is supplied', async () => {
+      const user = { email, password: '1111222ABDCD' };
+      const url = '/api/users/login';
+      const response = await request(app).post(url).send(user);
+
+      expect.assertions(2);
+      expect(response.status).toBe(400);
+      expect(response.text).toMatch(/invalid/i);
+    });
+  });
 });

@@ -1,5 +1,9 @@
 const jwt = require('jsonwebtoken');
-const { User, userRegisterValidator } = require('../../models/User');
+const {
+  User,
+  userRegisterValidator,
+  userLoginValidator,
+} = require('../../models/User');
 
 let id, name, email, password;
 
@@ -20,7 +24,7 @@ describe('GENERATE AUTH TOKEN', () => {
   });
 });
 
-describe('USER REGISTER VALIDATION', () => {
+describe('REGISTER JOI VALIDATION', () => {
   beforeEach(() => {
     name = 'Kennedy';
     email = 'kennedy@domain.com';
@@ -77,6 +81,39 @@ describe('USER REGISTER VALIDATION', () => {
       expect(error).toBeDefined();
       expect(error).toBeTruthy();
       expect(error?.message).toMatch(/confirmPassword/);
+    }
+  });
+});
+
+describe('LOGIN JOI VALIDATION', () => {
+  beforeEach(() => {
+    email = 'kennedy@domain.com';
+    password = 'Kennedy111';
+  });
+
+  it('should reject credentials without email property', async () => {
+    const user = { password };
+
+    expect.assertions(3);
+    try {
+      await userLoginValidator.validateAsync(user);
+    } catch (error) {
+      expect(error).toBeDefined();
+      expect(error).toBeTruthy();
+      expect(error?.message).toMatch(/email/);
+    }
+  });
+
+  it('should reject credentials without password property', async () => {
+    const user = { email };
+
+    expect.assertions(3);
+    try {
+      await userLoginValidator.validateAsync(user);
+    } catch (error) {
+      expect(error).toBeDefined();
+      expect(error).toBeTruthy();
+      expect(error?.message).toMatch(/password/);
     }
   });
 });
