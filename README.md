@@ -5,8 +5,8 @@ ExpressJS <br/>
 REST APIs and CRUD Operations <br/>
 Mongo DB and Modeling Relationships Between Collections <br/>
 Data Validation with Joi <br/>
-Authentication and Authorization with JWT using bcrypt and jsonwebtoken packages <br/>
-Environment Setup <br/>
+Authentication and Authorization with JWT using bcrypt and jsonwebtoken packages.<br/>
+Using dotenv for Environment setup. <br/>
 Asynchronous Javascript (Async-Await) <br/>
 Error Handling and Logging with Winston
 Unit and Integration Testing with Jest - using supertest package.
