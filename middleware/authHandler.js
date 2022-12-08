@@ -10,13 +10,13 @@ const { asyncHandler } = require('./asyncHandler');
  * @returns void or 401 Unauthorized
  */
 const myAuthHandler = async (req, res, next) => {
-  const token = req.headers?.authorization?.split(' ')[1]; // get token component only; not Bearer part
-  if (!token) {
-    res.status(401);
-    throw new Error('No token provided.');
-  }
-
   try {
+    const token = req.headers?.authorization?.split(' ')[1]; // get token component only; not Bearer part
+    if (!token) {
+      res.status(401);
+      throw new Error('No token provided.');
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
 
     res.status(200);

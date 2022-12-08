@@ -95,6 +95,8 @@ describe('Genres controller', () => {
 
       const { token, expiresIn } = loginRes.body;
 
+      // const someDynamicToken = new User().generateAuthToken();
+
       jwtToken = token;
 
       // Create Genre and Submit
@@ -110,6 +112,37 @@ describe('Genres controller', () => {
 
       expect(res.status).toBe(201);
       expect(res.body).toMatchObject({ name: genre.name });
+    });
+
+    it('should return a 401 Not Authorized if user is not logged in.', async () => {
+      const genre = { name: 'MyGenre2' };
+      const postUrl = '/api/genres';
+
+      const res = await request(app).post(postUrl).send(genre);
+
+      expect.assertions(2);
+
+      expect(res.status).toBe(401);
+      expect(res.text).toMatch(/token/);
+    });
+
+    it('should return the saved genre if the DB was queried.', async () => {
+      const jwtToken = new User().generateAuthToken();
+
+      const url = '/api/genres';
+      const genre = { name: 'MyGenre3' };
+
+      const res = await request(app)
+        .post(url)
+        .set('Authorization', `Bearer ${jwtToken}`)
+        .send(genre);
+
+      const newGenre = await Genre.findOne({ name: genre.name }); // Query the DB;
+
+      expect.assertions(3);
+      expect(newGenre).not.toBeNull();
+      expect(newGenre).toHaveProperty('_id');
+      expect(newGenre).toMatchObject({ name: genre.name });
     });
   });
 
