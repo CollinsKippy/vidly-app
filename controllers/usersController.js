@@ -37,7 +37,7 @@ const registerUser = asyncHandler(async (req, res) => {
     password: hashedPassword,
   });
 
-  // Return only user name and email - Destructuring :)
+  // Return only user name and email. Password is for user-eyes only.
 
   return res.status(201).json({ _id: newUser._id, name, email });
 });

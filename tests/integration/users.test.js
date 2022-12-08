@@ -26,8 +26,8 @@ describe('Users Controller', () => {
 
   describe('USER REGISTRATION', () => {
     it('should thow a 400 Bad Request if user email already exists in ', async () => {
-      const user = { name, email, password, confirmPassword };
-      const user2 = { name, email, password, confirmPassword };
+      let user, user2;
+      user = user2 = { name, email, password, confirmPassword };
 
       const firstUser = await User.create(user);
 
@@ -87,12 +87,13 @@ describe('Users Controller', () => {
 
       const response = await request(app).post(loginUrl).send(credentials);
 
-      expect.assertions(4);
+      expect.assertions(5);
 
       expect(response.status).toBe(201);
       expect(response.body).toMatchObject({ email });
       expect(response.body).toMatchObject({ name });
       expect(response.body.token).toBeTruthy();
+      expect(response.body.expiresIn).toBeTruthy();
     });
   });
 });

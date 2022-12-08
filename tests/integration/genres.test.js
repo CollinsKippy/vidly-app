@@ -10,6 +10,7 @@ const request = require('supertest');
 const app = require('../../app');
 
 const { Genre, genreJoiValidator } = require('../../models/Genre');
+const { User } = require('../../models/User');
 
 // let server;
 
@@ -64,20 +65,54 @@ describe('Genres controller', () => {
   });
 
   // POST
-  // describe('POST', () => {
-  //   // get jwt token
-  //   let jwtToken;
+  describe('POST', () => {
+    // get jwt token
 
-  //   beforeEach(async () => {
-  //     const email = 'collins.kippy@outlook.com';
-  //     const password = 'Pass1235';
+    beforeEach(async () => {
+      userName = 'Johnny';
+      email = 'johnny@domain.com';
+      password = 'Johnny111';
+      confirmPassword = 'Johnny111';
 
-  //     const url = '/api/users';
-  //     const res = await request(server).post(url).send({ email, password });
+      const registerUrl = '/api/users/register';
 
-  //     jwtToken = res?.token;
-  //   });
-  // });
+      const res = await request(app)
+        .post(registerUrl)
+        .send({ name: userName, email, password, confirmPassword });
+    });
+
+    afterEach(async () => {
+      await User.deleteMany({});
+    });
+
+    it('should return a 201 with a valid genre', async () => {
+      // Login User
+      const loginUrl = '/api/users/login';
+
+      const loginRes = await request(app)
+        .post(loginUrl)
+        .send({ email, password });
+
+      const { token, expiresIn } = loginRes.body;
+
+      jwtToken = token;
+
+      // Create Genre and Submit
+      const genre = { name: 'MyGenre' };
+      const postUrl = '/api/genres';
+
+      const res = await request(app)
+        .post(postUrl)
+        .set('Authorization', `Bearer ${jwtToken}`)
+        .send(genre);
+
+      expect.assertions(2);
+
+      expect(res.status).toBe(201);
+      expect(res.body).toMatchObject({ name: genre.name });
+    });
+  });
+
   // PUT
 
   // DELETE
