@@ -126,7 +126,7 @@ describe('Genres controller', () => {
       expect(res.text).toMatch(/token/);
     });
 
-    it('should return the saved genre if the DB was queried.', async () => {
+    it('should return the saved genre upon querying the DB.', async () => {
       const jwtToken = new User().generateAuthToken();
 
       const url = '/api/genres';

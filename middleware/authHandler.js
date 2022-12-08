@@ -13,8 +13,7 @@ const myAuthHandler = async (req, res, next) => {
   try {
     const token = req.headers?.authorization?.split(' ')[1]; // get token component only; not Bearer part
     if (!token) {
-      res.status(401);
-      throw new Error('No token provided.');
+      return res.status(401).json({ message: 'No token provided.' });
     }
 
     const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
@@ -28,7 +27,7 @@ const myAuthHandler = async (req, res, next) => {
     });
     next();
   } catch (error) {
-    next(error);
+    return res.status(400).json({ message: error?.message });
   }
 };
 
