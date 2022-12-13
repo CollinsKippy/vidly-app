@@ -1,6 +1,6 @@
-const { default: mongoose } = require('mongoose');
+const mongoose = require('mongoose');
 
-module.exports = function (req, res, next) {
+const validateObjectIdHandler = function (req, res, next) {
   if (!mongoose.isValidObjectId(req.params.id)) {
     res.status(400);
     throw new Error('Invalid Id.');
@@ -8,3 +8,5 @@ module.exports = function (req, res, next) {
 
   next();
 };
+
+module.exports = validateObjectIdHandler;
