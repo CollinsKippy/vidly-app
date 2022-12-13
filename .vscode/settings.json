@@ -5,11 +5,11 @@
   "editor.fontSize": 15,
   "editor.tokenColorCustomizations": {
     // "strings": "#f3b18a",
-    // "keywords": "#238ce2",
-    // "comments": "#7caf3d",
-    // "types": "#3dc9b0",
-    // "variables": "#f3f0f0",
-    "functions": "#eaecd6"
+    "keywords": "#569cd6",
+    "comments": "#7caf3d",
+    "types": "#3dc9b0",
+    "variables": "#f5dff4",
+    "functions": "#f1d5f0"
     // "numbers": "#b5cea8",
   },
   "editor.lineHeight": 1.7
