@@ -1,16 +1,16 @@
-{
-  "editor.fontFamily": "'Cascadia Mono'",
-  "editor.fontLigatures": false,
-  "editor.fontWeight": "300",
-  "editor.fontSize": 15,
-  "editor.tokenColorCustomizations": {
-    // "strings": "#f3b18a",
-    "keywords": "#2090ec",
-    "comments": "#7caf3d",
-    "types": "#3dc9b0",
-    "variables": "#fefefe",
-    "functions": "#eed9ed"
-    // "numbers": "#b5cea8",
-  },
-  "editor.lineHeight": 1.7
-}
+// {
+//   "editor.fontFamily": "'Cascadia Code'",
+//   "editor.fontLigatures": false,
+//   "editor.fontWeight": "400",
+//   "editor.fontSize": 15,
+//   "editor.tokenColorCustomizations": {
+//     "strings": "#e6da9e",
+//     "keywords": "#2090ec",
+//     "comments": "#75a53a",
+//     "types": "#28dbba",
+//     "variables": "#fefefe",
+//     "functions": "#dfcef1",
+//     "numbers": "#f0d864"
+//   },
+//   "editor.lineHeight": 1.6
+// }

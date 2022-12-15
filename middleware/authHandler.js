@@ -32,7 +32,7 @@ const myAuthHandler = async (req, res, next) => {
 };
 
 /**
- * Middle that checks whether user has Admin role
+ * Middleware that checks whether user has Admin role
  * @param {any} req request object
  * @param {any} res response object
  * @param {any} next reference to succeeding function

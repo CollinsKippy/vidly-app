@@ -48,10 +48,6 @@ const getSingleRental = asyncHandler(async (req, res) => {
 const createRental = asyncHandler(async (req, res) => {
   const value = await rentalJoiValidator.validateAsync(req.body);
 
-  // const customerId = req.body.customerId;
-  // const movieId = req.body.movieId;
-  // const numberOfDays = req.body.numberOfDays;
-
   const { customerId, movieId, numberOfDays } = request.body;
 
   const customer = await Customer.findById(req.body.customerId);
